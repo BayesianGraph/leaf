@@ -174,8 +174,9 @@ namespace API.Options
             var opts = sp.GetRequiredService<IOptions<ClinDbOptions>>().Value;
 
             switch (opts.Cohort.QueryStrategy)
-            {
+            {//zap
                 case ClinDbOptions.ClinDbCohortOptions.QueryStrategyOptions.CTE:
+                case ClinDbOptions.ClinDbCohortOptions.QueryStrategyOptions.CTEOR:
                     services.AddTransient<CohortCounter.IPatientCohortService, CtePatientCohortService>();
                     break;
 

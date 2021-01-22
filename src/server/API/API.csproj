@@ -4,9 +4,16 @@
     <!-- <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch> -->
     <TieredCompilation>true</TieredCompilation>
     <ReleaseVersion>3.1</ReleaseVersion>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>5768610d-7a6b-4710-a61f-8588ddc49311</UserSecretsId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath></OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

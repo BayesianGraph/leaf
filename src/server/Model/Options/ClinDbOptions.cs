@@ -12,7 +12,9 @@ namespace Model.Options
     public class ClinDbOptions : IConnectionString
     {
         public const string CTE = "CTE";
+        public const string CTEOR = "CTEOR";  //CTE Override flag to bypass the Leaf query and use a hosted stored procedure on the Clin DB 
         public const string Parallel = "PARALLEL";
+
 
         string connectionString;
         public string ConnectionString
@@ -47,8 +49,8 @@ namespace Model.Options
         public class ClinDbCohortOptions
         {
             public QueryStrategyOptions QueryStrategy { get; set; }
-
-            public static readonly IEnumerable<string> ValidQueryStrategies = new string[] { CTE, Parallel };
+            //ensure this array matches enum at bottom of this class
+            public static readonly IEnumerable<string> ValidQueryStrategies = new string[] { CTE, Parallel, CTEOR };
 
             static bool ValidQueryStrategy(string value) => ValidQueryStrategies.Contains(value);
 
@@ -68,6 +70,9 @@ namespace Model.Options
                     case Parallel:
                         QueryStrategy = QueryStrategyOptions.Parallel;
                         break;
+                    case CTEOR:
+                        QueryStrategy = QueryStrategyOptions.CTEOR;
+                        break;
                 }
             }
 
@@ -84,11 +89,18 @@ namespace Model.Options
                     defaultMaxParallelThreads = value;
                 }
             }
+            string overrideprocedure;
+            public string OverrideProcedure
+            {
+                get { return overrideprocedure; }
+                set { overrideprocedure = value; }
+            }
 
             public enum QueryStrategyOptions : ushort
             {
                 CTE = 1,
-                Parallel = 2
+                Parallel = 2,
+                CTEOR = 3
             }
         }
     }

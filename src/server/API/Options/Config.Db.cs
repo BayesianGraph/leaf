@@ -30,6 +30,7 @@ namespace API.Options
                 {
                     public const string QueryStrategy = @"Db:Clin:Cohort:QueryStrategy";
                     public const string MaxParallelThreads = @"Db:Clin:Cohort:MaxParallelThreads";
+                    public const string OverrideProcedure = @"Db:Clin:Cohort:OverrideProcedure";
                 }
             }
         }

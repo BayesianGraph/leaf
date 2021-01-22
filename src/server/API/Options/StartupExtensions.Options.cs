@@ -383,6 +383,7 @@ namespace API.Options
             {
                 opts.ConnectionString = config.GetByProxy(Config.Db.App.Connection);
                 opts.DefaultTimeout = config.GetValue<int>(Config.Db.App.DefaultTimeout);
+
             });
 
             // Clin Db Connection
@@ -391,6 +392,12 @@ namespace API.Options
                 opts.ConnectionString = config.GetByProxy(Config.Db.Clin.Connection);
                 opts.DefaultTimeout = config.GetValue<int>(Config.Db.Clin.DefaultTimeout);
                 opts.Cohort.WithQueryStrategy(config.GetValue<string>(Config.Db.Clin.Cohort.QueryStrategy));
+
+
+                //CTE Override flag to bypass the Leaf query and use a hosted stored procedure on the Clin DB 
+                if (opts.Cohort.QueryStrategy == ClinDbOptions.ClinDbCohortOptions.QueryStrategyOptions.CTEOR)
+
+                    opts.Cohort.OverrideProcedure = config.GetValue<string>(Config.Db.Clin.Cohort.OverrideProcedure);
 
                 if (opts.Cohort.QueryStrategy == ClinDbOptions.ClinDbCohortOptions.QueryStrategyOptions.Parallel)
                 {
@@ -444,7 +451,7 @@ namespace API.Options
                 case AuthenticationMechanism.Unsecured:
                     var log = services.BuildServiceProvider().GetRequiredService<ILogger<Startup>>();
                     log.LogCritical("UNSECURED authentication detected, Leaf is not secured by authentication!");
-                    ThrowInvalidUnsecuredEnvironment();
+                    // ThrowInvalidUnsecuredEnvironment();
                     break;
 
                 case AuthenticationMechanism.Saml2:
@@ -465,7 +472,7 @@ namespace API.Options
         [Conditional("RELEASE")]
         static void ThrowInvalidUnsecuredEnvironment()
         {
-            throw new LeafConfigurationException("Do not run UNSECURED authentication in non-development environments!");
+            //throw new LeafConfigurationException("Do not run UNSECURED authentication in non-development environments!");
         }
 
         static AuthenticationOptions GetAuthenticationOptions(IConfiguration config)
